@@ -59,7 +59,7 @@ high_cultivar = fuzzy_cone_gset(center=3, radius=1, universe=u4)
 cultivar = fuzzy_variable(low_cultivar=low_cultivar, avg_cultivar=avg_cultivar, high_cultivar=high_cultivar)
 cultivar_sets = set(low_cultivar=low_cultivar, avg_cultivar=avg_cultivar, high_cultivar=high_cultivar)
 plot(cultivar)
-plot(alcohol)
+plot(color_intensity)
 
 # Funkcja do zamiany wartości liczbowych na symboliczne na podstawie zbiorów rozmytych
 fuzzy_to_symbolic <- function(value, breaks, labels) {
@@ -67,22 +67,73 @@ fuzzy_to_symbolic <- function(value, breaks, labels) {
   return(as.character(cut_value))
 }
 
-alcohol_fuzzy_to_symbolic <- function(values) {
-  cut_value <- cut(value, breaks = breaks, labels = labels, include.lowest = TRUE)
-  return(as.character(cut_value))
-}
 
 # Definicja zbiorów rozmytych
-
-breaks_alcohol <- c(-Inf, 12, 14, Inf)
+# alcohol
+alco_a = 12
+alco_b = 13.5
+for (i in 1:length(alcohol_sets$avg_alcohol)) {
+  i = 12+(i-1)*0.01
+  if(length(attributes(alcohol_sets$avg_alcohol[i]))>1 & length(attributes(alcohol_sets$low_alcohol[i]))>1) {
+    if(attributes(alcohol_sets$low_alcohol[i])[[2]]>attributes(alcohol_sets$avg_alcohol[i])[[2]])
+    {
+      alco_a = i
+    }
+    else {
+      break
+    }
+  }
+}
+for (i in 1:length(alcohol_sets$high_alcohol)) {
+  i = 13.5+(i-1)*0.01
+  
+  if(length(attributes(alcohol_sets$high_alcohol[i]))>1 & length(attributes(alcohol_sets$avg_alcohol[i]))>1) {
+    if(attributes(alcohol_sets$high_alcohol[i])[[2]] < attributes(alcohol_sets$avg_alcohol[i])[[2]])
+    {
+      alco_b = i
+    }
+    else {
+      break
+    }
+  }
+}
+breaks_alcohol <- c(-Inf, alco_a, alco_b, Inf)
 labels_alcohol <- c("low_alcohol", "avg_alcohol", "high_alcohol")
 
+# malic_acid
+malic_acid_a = 2
+for (i in 1:length(malic_acid_sets$high_malic_acid)) {
+  i = 2+(i-1)*0.01
+  if(length(attributes(malic_acid_sets$high_malic_acid[i]))>1 & length(attributes(malic_acid_sets$low_malic_acid[i]))>1) {
+    if(attributes(malic_acid_sets$low_malic_acid[i])[[2]]>attributes(malic_acid_sets$high_malic_acid[i])[[2]])
+    {
+      malic_acid_a = i
+    }
+    else {
+      break
+    }
+  }
+}
 u2 <- seq(0, 6, 0.5)
-breaks_malic_acid <- c(-Inf, 3, Inf)
+breaks_malic_acid <- c(-Inf, malic_acid_a, Inf)
 labels_malic_acid <- c("low_malic_acid", "high_malic_acid")
 
+# color_intensity
+color_intensity_a = 4
+for (i in 1:length(color_intensity_sets$high_color_intensity)) {
+  i = 4+(i-1)*0.01
+  if(length(attributes(color_intensity_sets$high_color_intensity[i]))>1 & length(attributes(color_intensity_sets$low_color_intensity[i]))>1) {
+    if(attributes(color_intensity_sets$low_color_intensity[i])[[2]]>attributes(color_intensity_sets$high_color_intensity[i])[[2]])
+    {
+      color_intensity_a = i
+    }
+    else {
+      break
+    }
+  }
+}
 u3 <- seq(0, 12, 1)
-breaks_color_intensity <- c(-Inf, 6, Inf)
+breaks_color_intensity <- c(-Inf, color_intensity_a, Inf)
 labels_color_intensity <- c("low_color_intensity", "high_color_intensity")
 
 u4 <- seq(1, 3, 0.1)
@@ -102,7 +153,5 @@ train_data$color_intensity <- fuzzy_to_symbolic(train_data$color_intensity, brea
 train_data$cultivar <- fuzzy_to_symbolic(train_data$cultivar, breaks_cultivar, labels_cultivar)
 
 # Wyświetl przekształcone dane
-#print(train_data)
+print(train_data)
 
-#print(color_intensity_sets$low_color_intensity)
-print(attributes(alcohol_sets$avg_alcohol[12])[[2]])
