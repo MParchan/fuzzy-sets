@@ -18,6 +18,8 @@ str(train_data)
 print("test_data:")
 str(test_data)
 
+# Wykresy zbiorów rozmytych
+par(mfrow=c(2,2))  # Ustawienie układu na 2 wiersze i 2 kolumny
 
 # Zbiór rozmyty dla kolumny "alcohol"
 u1 = seq(11, 15, 0.01)
@@ -27,7 +29,7 @@ high_alcohol = fuzzy_cone_gset(center=15, radius=1.5, universe=u1)
 
 alcohol = fuzzy_variable(low_alcohol =low_alcohol, avg_alcohol=avg_alcohol, high_alcohol=high_alcohol)
 alcohol_sets = set(low_alcohol=low_alcohol, avg_alcohol=avg_alcohol, high_alcohol=high_alcohol)
-plot(alcohol)
+plot(alcohol, main="Alcohol")
 
 
 # Zbiór rozmyty dla kolumny "malic_acid"
@@ -37,7 +39,7 @@ high_malic_acid = fuzzy_cone_gset(center=6, radius=4, universe=u2)
 
 malic_acid = fuzzy_variable(low_malic_acid=low_malic_acid, high_malic_acid=high_malic_acid)
 malic_acid_sets = set(low_malic_acid=low_malic_acid, high_malic_acid=high_malic_acid)
-plot(malic_acid)
+plot(malic_acid, main="Malic Acid")
 
 
 # Zbiór rozmyty dla kolumny "color_intensity"
@@ -47,7 +49,7 @@ high_color_intensity = fuzzy_cone_gset(center=12, radius=8, universe=u3)
 
 color_intensity = fuzzy_variable(low_color_intensity =low_color_intensity, high_color_intensity=high_color_intensity)
 color_intensity_sets = set(low_color_intensity =low_color_intensity, high_color_intensity=high_color_intensity)
-plot(color_intensity)
+plot(color_intensity, main="Color Intensity")
 
 
 # Zbiór rozmyty dla kolumny "cultivar"
@@ -58,8 +60,7 @@ high_cultivar = fuzzy_cone_gset(center=3, radius=1, universe=u4)
 
 cultivar = fuzzy_variable(low_cultivar=low_cultivar, avg_cultivar=avg_cultivar, high_cultivar=high_cultivar)
 cultivar_sets = set(low_cultivar=low_cultivar, avg_cultivar=avg_cultivar, high_cultivar=high_cultivar)
-plot(cultivar)
-plot(color_intensity)
+plot(cultivar, main="Cultivar")
 
 # Funkcja do zamiany wartości liczbowych na symboliczne na podstawie zbiorów rozmytych
 fuzzy_to_symbolic <- function(value, breaks, labels) {
