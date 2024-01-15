@@ -155,43 +155,46 @@ train_data$cultivar <- fuzzy_to_symbolic(train_data$cultivar, breaks_cultivar, l
 
 # Wyświetl przekształcone dane
 print(train_data)
+write.table(train_data, file = "train_data_symbolic.txt", sep = "\t", row.names = FALSE)
 
 # alcohol rdzeń
-alochol_core <- c()
+alcohol_core <- c()
 for (i in 1:length(avg_alcohol)) {
   i = 12+(i-1)*0.01
   if(length(attributes(avg_alcohol[i]))==1 & i>=12.5)
   {
     if((length(attributes(avg_alcohol[i+0.01]))==1) | (length(attributes(avg_alcohol[i-0.01]))==1))
     {
-      alochol_core <- c(alochol_core, i)
+      alcohol_core <- c(alochol_core, i)
     }
   }
 }
 print("Rdzeń dla alcohol:")
-print(alochol_core)
+print(alcohol_core)
+write.table(alcohol_core, file = "alcohol_core.txt", col.names = FALSE, row.names = FALSE)
 
 
 # alcohol α-przekrój
-alochol_section <- c()
+alcohol_section <- c()
 for (i in 1:length(alcohol_sets$avg_alcohol)) {
   i = 12+(i-1)*0.01
   if(length(attributes(alcohol_sets$avg_alcohol[i]))==1 & i>=12.5)
   {
     if((length(attributes(avg_alcohol[i+0.01]))==1) | (length(attributes(avg_alcohol[i-0.01]))==1))
     {
-    alochol_section <- c(alochol_section, i)
+    alcohol_section <- c(alochol_section, i)
     }
   }
   if(length(attributes(alcohol_sets$avg_alcohol[i]))==2)
   {
     if(attributes(alcohol_sets$avg_alcohol[i])[[2]]>=0.75)
     {
-      alochol_section <- c(alochol_section, i)
+      alcohol_section <- c(alcohol_section, i)
     }
   }
 }
 print("alfa-przekrój, gdzie alfa = 0.75:")
-print(alochol_section)
+print(alcohol_section)
+write.table(alcohol_section, file = "alcohol_section.txt", col.names = FALSE, row.names = FALSE)
 
 
